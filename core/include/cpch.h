@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <functional>
-#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
