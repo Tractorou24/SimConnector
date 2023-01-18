@@ -6,8 +6,14 @@
 
 namespace simconnect::interfaces
 {
+	/**
+     * @brief The SimVar interface to be used by clients.
+     */
     class ISimVar {};
 
+    /**
+	 * @brief The SimVarGroup interface to be used by clients.
+     */
     class ISimVarGroup : public std::vector<std::shared_ptr<ISimVar>> { };
 }
 
@@ -23,26 +29,65 @@ namespace simconnect::details
         Dummy = 0
     };
 
-    void CALLBACK simconnect_callback(raw::SIMCONNECT_RECV*, raw::DWORD, void*);
+    /**
+	* @brief The callback used by simconnect to receive data from the simulator.
+	* @param p_data Pointer to a data buffer, to be treated initially as a SIMCONNECT_RECV structure.
+	* @param cb_data The size of the data buffer, in bytes.
+	* @param p_context Contains the pointer specified by the client in the SimConnect_CallDispatch function call.
+	*/
+    void CALLBACK simconnect_callback(raw::SIMCONNECT_RECV* p_data, raw::DWORD cb_data, void* p_context);
+
 }
 
 namespace simconnect
 {
+	/**
+     * @brief Any SimConnect Simvar used to make requests and receive responses.
+	 * @warning Should be used for casts only.
+     */
     class SimVar : public interfaces::ISimVar
     {
         friend class Runner;
         friend void CALLBACK details::simconnect_callback(raw::SIMCONNECT_RECV*, raw::DWORD, void*);
 
     public:
+        /**
+         * @brief Instantiates a new SimVar.
+         * @param name The name of the SimVar in the simulator.
+         * @param units The unit for the Simvar.
+		 * @param is_string If the SimVar data response is a string.
+         */
         SimVar(std::string name, std::string units, const bool& is_string)
             : m_name(std::move(name)), m_units(std::move(units)), m_is_string(is_string) {}
 
+        /**
+         * @return The simulator name of the SimVar.
+         */
         [[nodiscard]] std::string name() const noexcept { return m_name; }
+
+        /**
+		 * @return The unit of the SimVar.
+         */
         [[nodiscard]] std::string units() const noexcept { return m_units; }
+
+        /**
+		 * @return If the SimVar data response is a string.
+         */
         [[nodiscard]] bool isString() const noexcept { return m_is_string; }
+
+        /**
+         * @return If the SimVar was successfully requested and waiting for response.
+         */
         [[nodiscard]] bool isPending() const noexcept { return m_is_pending; }
 
+        /**
+         * @return The value of the SimVar if not a string.
+         */
         [[nodiscard]] double value() const noexcept { return m_double_value; }
+
+        /**
+		 * @return The value of the SimVar if it's a string.
+         */
         [[nodiscard]] std::string stringValue() const noexcept { return m_string_value; }
 
     private:
