@@ -26,15 +26,7 @@ project "server"
 		"src",
 		"include",
 		"../core/include",
-		"../vendor/brynet/include",
 		"../vendor/SimConnect/include"
-	}
-
-	-- Used for the brynet library
-	defines
-	{
-		"_SILENCE_CXX20_IS_POD_DEPRECATION_WARNING",
-		"_SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING"
 	}
 
 	filter "configurations:Debug"
