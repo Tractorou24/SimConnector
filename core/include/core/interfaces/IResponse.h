@@ -35,13 +35,13 @@ namespace core::interfaces
         IResponse& operator=(const IResponse& other) = delete;
         IResponse& operator=(IResponse&& other) noexcept = delete;
 
-        virtual void push(const std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) = 0;
-        [[nodiscard]] virtual std::shared_ptr<simconnect::interfaces::ISimVar> pop() noexcept = 0;
+        virtual void push(const std::shared_ptr<simconnect::SimVar>& simvar) = 0;
+        [[nodiscard]] virtual std::shared_ptr<simconnect::SimVar> pop() noexcept = 0;
         [[nodiscard]] virtual std::size_t size() const noexcept { return m_simvars.size(); }
         virtual void checkValid() const = 0;
         [[nodiscard]] virtual response::Type responseType() const noexcept = 0;
 
     protected:
-        std::stack<std::shared_ptr<simconnect::interfaces::ISimVar>> m_simvars = {};
+        std::stack<std::shared_ptr<simconnect::SimVar>> m_simvars = {};
     };
 }

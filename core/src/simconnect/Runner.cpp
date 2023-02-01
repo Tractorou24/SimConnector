@@ -31,7 +31,7 @@ namespace simconnect::details
             {
                 auto* data = reinterpret_cast<raw::SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE*>(p_data);
 
-                std::shared_ptr<interfaces::ISimVar> received_simvar = nullptr;
+                std::shared_ptr<SimVar> received_simvar = nullptr;
                 const auto received_request = std::find_if(runner->m_requests.begin(), runner->m_requests.end()
                                                            , [&](const auto& request_interface)
                                                            {

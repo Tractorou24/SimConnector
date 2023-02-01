@@ -13,15 +13,11 @@ int main(int argc, char* argv[])
     SimConnectLoader::LoadSimConnect();
     auto* runner = simconnect::Runner::GetInstance();
 
-    std::shared_ptr<simconnect::interfaces::ISimVar> simvar = std::make_shared<simconnect::SimVar>(
-        "GPS GROUND SPEED", "Meters per second", false);
-    std::shared_ptr<simconnect::interfaces::ISimVar> simvar2 = std::make_shared<simconnect::SimVar>(
-        "HSI STATION IDENT", "String", true);
+    auto simvar = std::make_shared<simconnect::SimVar>("GPS GROUND SPEED", "Meters per second", false);
+    auto simvar2 = std::make_shared<simconnect::SimVar>("HSI STATION IDENT", "String", true);
 
-    std::shared_ptr<simconnect::interfaces::ISimVar> simvar3 = std::make_shared<simconnect::SimVar>(
-        "HSI DISTANCE", "Nautical miles", false);
-    std::shared_ptr<simconnect::interfaces::ISimVar> simvar4 = std::make_shared<simconnect::SimVar>(
-        "FUEL RIGHT QUANTITY", "Gallons", false);
+    auto simvar3 = std::make_shared<simconnect::SimVar>("HSI DISTANCE", "Nautical miles", false);
+    auto simvar4 = std::make_shared<simconnect::SimVar>("FUEL RIGHT QUANTITY", "Gallons", false);
 
     std::shared_ptr<core::interfaces::IRequest> rq = std::make_shared<core::request::ReadRequest>();
     std::shared_ptr<core::interfaces::IRequest> rq2 = std::make_shared<core::request::ReadRequest>();
@@ -34,7 +30,7 @@ int main(int argc, char* argv[])
             x->checkValid();
             while (x->size() != 0)
             {
-                const auto* var = reinterpret_cast<simconnect::SimVar*>(x->pop().get());
+                const auto var = x->pop();
                 std::cout << var->name() << " = " << var->value() << var->stringValue() << std::endl;
             }
         }));
@@ -47,7 +43,7 @@ int main(int argc, char* argv[])
             x->checkValid();
             while (x->size() != 0)
             {
-                const auto* var = reinterpret_cast<simconnect::SimVar*>(x->pop().get());
+                const auto var = x->pop();
                 std::cout << var->name() << " = " << var->value() << var->stringValue() << std::endl;
             }
         }));

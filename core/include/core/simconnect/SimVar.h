@@ -2,20 +2,8 @@
 
 #include "cpch.h"
 
+#include <core/ser/serialize.h>
 #include <SimConnect/SimConnect.h>
-
-namespace simconnect::interfaces
-{
-	/**
-     * @brief The SimVar interface to be used by clients.
-     */
-    class ISimVar {};
-
-    /**
-	 * @brief The SimVarGroup interface to be used by clients.
-     */
-    class ISimVarGroup : public std::vector<std::shared_ptr<ISimVar>> { };
-}
 
 namespace simconnect::details
 {
@@ -43,11 +31,10 @@ namespace simconnect
 {
 	/**
      * @brief Any SimConnect Simvar used to make requests and receive responses.
-	 * @warning Should be used for casts only.
      */
-    class SimVar : public interfaces::ISimVar
+    class SimVar
     {
-        friend class Runner;
+	    friend class Runner;
         friend void CALLBACK details::simconnect_callback(raw::SIMCONNECT_RECV*, raw::DWORD, void*);
 
     public:

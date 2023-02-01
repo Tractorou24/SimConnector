@@ -5,22 +5,22 @@
 
 namespace core::request
 {
-    void ReadRequest::addSimVar(std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) noexcept
+    void ReadRequest::addSimVar(std::shared_ptr<simconnect::SimVar>& simvar) noexcept
     {
         m_simvars.push_back(simvar);
     }
 
-    void ReadRequest::addSimVars(std::vector<std::shared_ptr<simconnect::interfaces::ISimVar>>& simvars) noexcept
+    void ReadRequest::addSimVars(std::vector<std::shared_ptr<simconnect::SimVar>>& simvars) noexcept
     {
         m_simvars.insert(m_simvars.end(), simvars.begin(), simvars.end());
     }
 
-    std::vector<std::shared_ptr<simconnect::interfaces::ISimVar>>& ReadRequest::simVars() noexcept
+    std::vector<std::shared_ptr<simconnect::SimVar>>& ReadRequest::simVars() noexcept
     {
         return m_simvars;
     }
 
-    void ReadRequest::removeSimVar(const std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) noexcept
+    void ReadRequest::removeSimVar(const std::shared_ptr<simconnect::SimVar>& simvar) noexcept
     {
         std::erase(m_simvars, simvar);
     }

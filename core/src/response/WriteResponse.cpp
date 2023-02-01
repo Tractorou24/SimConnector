@@ -8,12 +8,12 @@ void core::response::WriteResponse::checkValid() const
         throw bad_response("WriteResponse::checkValid() - No simvars in response !");
 }
 
-void core::response::WriteResponse::push(const std::shared_ptr<simconnect::interfaces::ISimVar>& simvar)
+void core::response::WriteResponse::push(const std::shared_ptr<simconnect::SimVar>& simvar)
 {
     m_simvars.push(simvar);
 }
 
-std::shared_ptr<simconnect::interfaces::ISimVar> core::response::WriteResponse::pop() noexcept
+std::shared_ptr<simconnect::SimVar> core::response::WriteResponse::pop() noexcept
 {
     auto simvar = m_simvars.top();
     m_simvars.pop();

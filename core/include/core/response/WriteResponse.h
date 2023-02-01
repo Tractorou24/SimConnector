@@ -20,13 +20,13 @@ namespace core::response
          * @brief Pushes a simvar to the response.
          * @param simvar The shared pointer simvar to push.
          */
-        void push(const std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) override;
+        void push(const std::shared_ptr<simconnect::SimVar>& simvar) override;
 
         /**
          * @brief Pops a simvar from the response.
          * @return The shared pointer simvar popped.
          */
-        [[nodiscard]] std::shared_ptr<simconnect::interfaces::ISimVar> pop() noexcept override;
+        [[nodiscard]] std::shared_ptr<simconnect::SimVar> pop() noexcept override;
 
         /**
          * @brief Gets the response type (Read or Write).

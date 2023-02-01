@@ -35,15 +35,15 @@ namespace core::interfaces
         IRequest& operator=(const IRequest& other) = delete;
         IRequest& operator=(IRequest&& other) noexcept = delete;
 
-        [[nodiscard]] virtual std::vector<std::shared_ptr<simconnect::interfaces::ISimVar>>& simVars() noexcept = 0;
-        virtual void addSimVar(std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) noexcept = 0;
-        virtual void addSimVars(std::vector<std::shared_ptr<simconnect::interfaces::ISimVar>>& simvars) noexcept = 0;
-        virtual void removeSimVar(const std::shared_ptr<simconnect::interfaces::ISimVar>& simvar) noexcept = 0;
+        [[nodiscard]] virtual std::vector<std::shared_ptr<simconnect::SimVar>>& simVars() noexcept = 0;
+        virtual void addSimVar(std::shared_ptr<simconnect::SimVar>& simvar) noexcept = 0;
+        virtual void addSimVars(std::vector<std::shared_ptr<simconnect::SimVar>>& simvars) noexcept = 0;
+        virtual void removeSimVar(const std::shared_ptr<simconnect::SimVar>& simvar) noexcept = 0;
         [[nodiscard]] virtual request::Type requestType() const noexcept = 0;
 
         Signal<const std::shared_ptr<IResponse>&> responseSignal;
 
     protected:
-        std::vector<std::shared_ptr<simconnect::interfaces::ISimVar>> m_simvars = {};
+        std::vector<std::shared_ptr<simconnect::SimVar>> m_simvars = {};
     };
 }
