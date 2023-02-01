@@ -42,6 +42,6 @@ namespace core::interfaces
         [[nodiscard]] virtual response::Type responseType() const noexcept = 0;
 
     protected:
-        std::stack<std::shared_ptr<simconnect::SimVar>> m_simvars = {};
+        std::vector<std::shared_ptr<simconnect::SimVar>> m_simvars = {};
     };
 }

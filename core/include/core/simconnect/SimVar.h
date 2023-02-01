@@ -27,6 +27,7 @@ namespace simconnect::details
 
 }
 
+
 namespace simconnect
 {
 	/**
@@ -37,6 +38,8 @@ namespace simconnect
 	    friend class Runner;
         friend void CALLBACK details::simconnect_callback(raw::SIMCONNECT_RECV*, raw::DWORD, void*);
 
+    	SERIALIZE_FULL_CLASS(SimVar, m_definition, m_request, m_name, m_units, m_is_string, m_is_pending, m_string_value, m_double_value)
+
     public:
         /**
          * @brief Instantiates a new SimVar.
@@ -46,6 +49,9 @@ namespace simconnect
          */
         SimVar(std::string name, std::string units, const bool& is_string)
             : m_name(std::move(name)), m_units(std::move(units)), m_is_string(is_string) {}
+
+        SimVar() = default;
+		virtual ~SimVar() = default;
 
         /**
          * @return The simulator name of the SimVar.
@@ -76,15 +82,14 @@ namespace simconnect
 		 * @return The value of the SimVar if it's a string.
          */
         [[nodiscard]] std::string stringValue() const noexcept { return m_string_value; }
-
+	
     private:
         details::Definition m_definition = details::Definition::Dummy;
         details::Request m_request = details::Request::Dummy;
         std::string m_string_value;
         double m_double_value = 0;
 
-        const std::string m_name, m_units;
-        const bool m_is_string = false;
-        bool m_is_pending = false;
+        std::string m_name, m_units;
+        bool m_is_string = false, m_is_pending = false;
     };
 }

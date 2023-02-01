@@ -10,12 +10,12 @@ void core::response::WriteResponse::checkValid() const
 
 void core::response::WriteResponse::push(const std::shared_ptr<simconnect::SimVar>& simvar)
 {
-    m_simvars.push(simvar);
+    m_simvars.push_back(simvar);
 }
 
 std::shared_ptr<simconnect::SimVar> core::response::WriteResponse::pop() noexcept
 {
-    auto simvar = m_simvars.top();
-    m_simvars.pop();
+    auto simvar = m_simvars.front();
+	std::erase(m_simvars, simvar);
     return simvar;
 }
