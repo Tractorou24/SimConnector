@@ -5,11 +5,11 @@
 
 namespace simconnect
 {
-	/**
+    /**
      * @brief A simconnect server runner.
      * It is responsible of communicating with the simulator, making requests and receiving data.
      */
-	class Runner
+    class Runner
     {
         friend void CALLBACK details::simconnect_callback(raw::SIMCONNECT_RECV* p_data, raw::DWORD cb_data, void* p_context);
 
@@ -19,40 +19,40 @@ namespace simconnect
         Runner& operator=(const Runner& other) = delete;
         Runner& operator=(Runner&& other) noexcept = delete;
 
-	    /**
-		 * @brief Get the singleton instance of the runner.
+        /**
+        * @brief Get the singleton instance of the runner.
          */
         static Runner* GetInstance();
 
-	    /**
+        /**
          * @brief Opens the connection to the running simulator.
-		 * @return If the connection succeed.
+      * @return If the connection succeed.
          */
         bool openConnection();
 
-	    /**
-		 * @brief Closes the connection to the running simulator.
-		 * @return If the disconnection succeed.
+        /**
+        * @brief Closes the connection to the running simulator.
+      * @return If the disconnection succeed.
          */
         bool closeConnection();
 
-	    /**
+        /**
          * @return The connection status.
          */
         [[nodiscard]] bool isRunning() const { return !m_quit; }
 
-	    /**
-		 * @brief Make all stored requests to the simulator and wait for the data to be received and sent back to the client.
+        /**
+        * @brief Make all stored requests to the simulator and wait for the data to be received and sent back to the client.
          */
         void pollEvents();
 
-	    /**
-		 * @brief Add a request to the runner.
-		 * @param request A shared pointer to the request you want to add.
+        /**
+        * @brief Add a request to the runner.
+         * @param request A shared pointer to the request you want to add.
          */
         void addRequest(std::shared_ptr<core::interfaces::IRequest>& request);
 
-	    /**
+        /**
          * @brief Removes a request from the runner
          * @param request A shared pointer to the request you want to remove.
          */

@@ -5,21 +5,21 @@
 namespace core::request
 {
     /**
-	 * @brief A class to make a write request for the simulator.
-	 */
+    * @brief A class to make a write request for the simulator.
+   */
     class WriteRequest final : public core::interfaces::IRequest
     {
         // Serialization
         START_SERIALIZATION(WriteRequest)
-        json::json simvars = json::json::array();
-        for (const auto& simvar : m_simvars)
-            simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
-        obj["simvars"] = simvars;
+            json::json simvars = json::json::array();
+            for (const auto& simvar : m_simvars)
+                simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
+            obj["simvars"] = simvars;
         END_SERIALIZATION
 
         START_DESERIALIZATION(WriteRequest)
-        for (const auto& simvar : object["simvars"])
-            ptr->m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
+            for (const auto& simvar : object["simvars"])
+                ptr->m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
         END_DESERIALIZATION
 
     public:

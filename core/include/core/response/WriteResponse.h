@@ -5,21 +5,21 @@
 namespace core::response
 {
     /**
-	 * @brief A class received from the simulator after a WriteRequest.
-	 */
+    * @brief A class received from the simulator after a WriteRequest.
+    */
     class WriteResponse final : public interfaces::IResponse
     {
         // Serialization
         START_SERIALIZATION(WriteResponse)
-        json::json simvars = json::json::array();
-        for (const auto& simvar : m_simvars)
-            simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
-        obj["simvars"] = simvars;
+            json::json simvars = json::json::array();
+            for (const auto& simvar : m_simvars)
+                simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
+            obj["simvars"] = simvars;
         END_SERIALIZATION
 
         START_DESERIALIZATION(WriteResponse)
-        for (const auto& simvar : object["simvars"])
-            ptr->m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
+            for (const auto& simvar : object["simvars"])
+                ptr->m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
         END_DESERIALIZATION
 
     public:

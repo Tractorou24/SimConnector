@@ -16,6 +16,6 @@ void core::response::WriteResponse::push(const std::shared_ptr<simconnect::SimVa
 std::shared_ptr<simconnect::SimVar> core::response::WriteResponse::pop() noexcept
 {
     auto simvar = m_simvars.front();
-	std::erase(m_simvars, simvar);
+    std::erase(m_simvars, simvar);
     return simvar;
 }
