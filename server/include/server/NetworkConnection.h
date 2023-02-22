@@ -2,13 +2,15 @@
 
 #include <core/interfaces/IConnection.h>
 
+#include <boost/asio.hpp>
+
 namespace server
 {
     class NetworkConnection final : protected core::interfaces::IConnection
     {
     public:
-        [[noreturn]] explicit NetworkConnection(std::string ip, const uint16_t& port);
-        [[noreturn]] explicit NetworkConnection(const std::string& connection_string);
+        explicit NetworkConnection(std::string ip, const uint16_t& port);
+        explicit NetworkConnection(const std::string& connection_string);
         ~NetworkConnection() override;
 
         NetworkConnection(const NetworkConnection& other) = delete;
@@ -22,5 +24,10 @@ namespace server
     private:
         const std::string m_ip;
         const uint16_t m_port;
+
+        std::thread m_thread;
+        bool m_isConnected;
+        boost::asio::io_service m_ioService;
+        boost::asio::ip::tcp::socket m_socket;
     };
 }
