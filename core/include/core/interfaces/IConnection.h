@@ -20,6 +20,7 @@ namespace core::interfaces
 
         [[nodiscard]] virtual bool connect() noexcept = 0;
         [[nodiscard]] virtual bool send(const IRequest* request) noexcept = 0;
-        core::Signal<const IResponse*> responseSignal;
+
+        core::Signal<const std::shared_ptr<IResponse>> responseSignal;
     };
 }

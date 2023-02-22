@@ -1,9 +1,10 @@
-﻿#include "cpch.h"
+﻿#include "spch.h"
+
+#include <server/Runner.h>
 
 #include <core/request/ReadRequest.h>
 #include <core/response/ReadResponse.h>
 #include <core/response/WriteResponse.h>
-#include <core/simconnect/Runner.h>
 
 namespace simconnect::details
 {

@@ -8,9 +8,9 @@ namespace core::request
 {
     enum class Type
     {
-        Read
-        , Write
-        , Unknown
+        Read,
+        Write,
+        Unknown
     };
 
     // ReSharper disable once CppInconsistentNaming
@@ -24,11 +24,11 @@ namespace core::request
 
 namespace core::interfaces
 {
-    class IRequest
+    class IRequest : public ISerializable<IRequest>
     {
     public:
         IRequest() = default;
-        virtual ~IRequest() = default;
+        ~IRequest() override = default;
 
         IRequest(const IRequest& other) = delete;
         IRequest(IRequest&& other) noexcept = delete;

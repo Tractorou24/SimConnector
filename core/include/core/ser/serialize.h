@@ -5,10 +5,19 @@
 #include <nlohmann/json.hpp>
 namespace json = nlohmann;
 
+template <typename T>
+class ISerializable
+{
+public:
+    [[nodiscard]] virtual std::string serialize() const = 0;
+    virtual void deserialize(const std::string& str) = 0;
+    virtual ~ISerializable() = default;
+};
+
 // Serializer / Deserializer
 #define START_SERIALIZATION(class_name)                                                                 \
     public:                                                                                             \
-    virtual std::string serialize()                                                                         \
+    std::string serialize() const override                                                              \
     {                                                                                                   \
         json::json obj;                                                                                 \
         obj["class_name"] = typeid(*this).name();
@@ -17,12 +26,10 @@ namespace json = nlohmann;
     }
 
 #define START_DESERIALIZATION(class_name)                                                               \
-    static std::shared_ptr<class_name> deserialize(const std::string& str)                              \
+    void deserialize(const std::string& str) override                                                   \
     {                                                                                                   \
-        const auto object = json::json::parse(str);                                                     \
-        const auto ptr = std::make_shared<class_name>();
+        const auto object = json::json::parse(str);
 #define END_DESERIALIZATION                                                                             \
-        return ptr;                                                                                     \
     }                                                                                                   \
     private:
 

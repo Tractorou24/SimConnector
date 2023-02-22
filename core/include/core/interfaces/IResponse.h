@@ -8,9 +8,9 @@ namespace core::response
 {
     enum class Type
     {
-        Read
-        , Write
-        , Unknown
+        Read,
+        Write,
+        Unknown
     };
 
     // ReSharper disable once CppInconsistentNaming
@@ -24,11 +24,11 @@ namespace core::response
 
 namespace core::interfaces
 {
-    class IResponse
+    class IResponse : public ISerializable<IResponse>
     {
     public:
         IResponse() = default;
-        virtual ~IResponse() = default;
+        ~IResponse() override = default;
 
         IResponse(const IResponse& other) = delete;
         IResponse(IResponse&& other) noexcept = delete;

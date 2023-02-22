@@ -9,17 +9,19 @@ namespace core::response
      */
     class ReadResponse final : public interfaces::IResponse
     {
+    private:
         // Serialization
         START_SERIALIZATION(ReadResponse)
             json::json simvars = json::json::array();
             for (const auto& simvar : m_simvars)
                 simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
             obj["simvars"] = simvars;
+            obj["type"] = "ReadResponse";
         END_SERIALIZATION
 
         START_DESERIALIZATION(ReadResponse)
             for (const auto& simvar : object["simvars"])
-                ptr->m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
+                m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
         END_DESERIALIZATION
 
     public:
