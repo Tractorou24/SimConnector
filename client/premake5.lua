@@ -7,6 +7,11 @@ project "client"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	links
+	{
+		"core"
+	}
+	
 	pchheader "cpch.h"
 	pchsource "src/cpch.cpp"
 
@@ -19,7 +24,9 @@ project "client"
 	includedirs
 	{
 		"src",
-		"include"
+		"include",
+		"../core/include",
+		"../vendor/SimConnect/include"
 	}
 
 	filter "configurations:Debug"
