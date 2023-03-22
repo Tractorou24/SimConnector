@@ -1,6 +1,4 @@
-﻿#include "spch.h"
-
-#include <server/NetworkConnection.h>
+﻿#include <server/NetworkConnection.h>
 
 server::NetworkConnection::NetworkConnection(std::string ip, const uint16_t& port)
     : m_ip(std::move(ip)), m_port(port), m_socket(m_ioService) {}

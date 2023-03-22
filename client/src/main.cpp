@@ -1,8 +1,8 @@
-#include "cpch.h"
-
 #include <boost/asio.hpp>
 
 #include <core/response/ResponseFactory.h>
+
+#include <iostream>
 
 std::string read_(boost::asio::ip::tcp::socket& socket)
 {
@@ -12,7 +12,7 @@ std::string read_(boost::asio::ip::tcp::socket& socket)
     return data;
 }
 
-int main(int argc, char* argv[])
+int main(int, char**)
 {
     ResponseFactory factory;
     boost::asio::io_context io_context;

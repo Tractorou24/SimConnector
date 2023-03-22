@@ -1,6 +1,4 @@
-﻿#include "cpch.h"
-
-#include <core/response/WriteResponse.h>
+﻿#include <core/response/WriteResponse.h>
 
 void core::response::WriteResponse::checkValid() const
 {

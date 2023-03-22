@@ -1,6 +1,6 @@
-﻿#include "cpch.h"
+﻿#include <core/response/ReadResponse.h>
 
-#include <core/response/ReadResponse.h>
+#include <memory>
 
 void core::response::ReadResponse::checkValid() const
 {

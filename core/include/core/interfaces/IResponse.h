@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "cpch.h"
-
 #include <core/simconnect/SimVar.h>
 
 namespace core::response

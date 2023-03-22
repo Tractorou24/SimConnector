@@ -1,6 +1,4 @@
-﻿#include "cpch.h"
-
-#include <core/request/ReadRequest.h>
+﻿#include <core/request/ReadRequest.h>
 #include <core/simconnect/SimVar.h>
 
 namespace core::request

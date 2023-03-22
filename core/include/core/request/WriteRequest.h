@@ -1,13 +1,14 @@
 ﻿#pragma once
 
 #include <core/interfaces/IRequest.h>
+#include <core/Export.h>
 
 namespace core::request
 {
     /**
     * @brief A class to make a write request for the simulator.
    */
-    class WriteRequest final : public core::interfaces::IRequest
+    class CORE_EXPORT WriteRequest final : public core::interfaces::IRequest
     {
         // Serialization
         START_SERIALIZATION(WriteRequest)

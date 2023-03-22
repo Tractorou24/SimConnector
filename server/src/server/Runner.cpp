@@ -1,6 +1,4 @@
-﻿#include "spch.h"
-
-#include <server/Runner.h>
+﻿#include <server/Runner.h>
 
 #include <core/request/ReadRequest.h>
 #include <core/response/ReadResponse.h>
@@ -8,7 +6,7 @@
 
 namespace simconnect::details
 {
-    void CALLBACK simconnect_callback(raw::SIMCONNECT_RECV* p_data, raw::DWORD cb_data, void* p_context)
+    void CALLBACK simconnect_callback(raw::SIMCONNECT_RECV* p_data, raw::DWORD, void*)
     {
         const auto* runner = Runner::GetInstance();
         switch (p_data->dwID)

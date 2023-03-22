@@ -1,0 +1,199 @@
+﻿{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "WinOnly",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+    {
+      "name": "LinuxOnly",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "~/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "msvc143",
+      "hidden": true,
+      "inherits": [ "WinOnly" ],
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "ninja_multi",
+      "hidden": true,
+      "description": "Ninja Multi-Config generator base preset",
+      "binaryDir": "${sourceDir}/out/build-spark-ninja-multi",
+      "installDir": "${sourceDir}/out/install-spark-ninja-multi",
+      "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "ninja_rel",
+      "hidden": true,
+      "description": "Ninja generator base preset - Release",
+      "binaryDir": "${sourceDir}/out/build-spark-ninja-rel",
+      "installDir": "${sourceDir}/out/install-spark-ninja-rel",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "ninja_deb",
+      "hidden": true,
+      "description": "Ninja generator base preset - Debug",
+      "binaryDir": "${sourceDir}/out/build-spark-ninja-deb",
+      "installDir": "${sourceDir}/out/install-spark-ninja-deb",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "vc143_ninja_multi",
+      "hidden": true,
+      "inherits": [ "ninja_multi", "msvc143" ],
+      "description": "Ninja Multi-Config for VC2022 preset"
+    },
+    {
+      "name": "vc143_ninja_rel",
+      "hidden": true,
+      "inherits": [ "ninja_rel", "msvc143" ],
+      "description": "Ninja - Release for VC2022 preset"
+    },
+    {
+      "name": "vc143_ninja_deb",
+      "hidden": true,
+      "inherits": [ "ninja_deb", "msvc143" ],
+      "description": "Ninja - Debug for VC2022 preset"
+    },
+    {
+      "name": "dev_base",
+      "hidden": true,
+      "description": "Developer base preset"
+    },
+    {
+      "name": "dev_vc143",
+      "inherits": [ "dev_base", "WinOnly" ],
+      "displayName": "Developer - VS 17 2022",
+      "description": "Developer build using Visual Studio 17 2022 generator",
+      "binaryDir": "${sourceDir}/out/build-spark-vs22",
+      "installDir": "${sourceDir}/out/install-spark-vs22",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "dev_vc143_ninja",
+      "inherits": [ "dev_base", "vc143_ninja_multi" ],
+      "displayName": "Developer - Ninja Multi-Config - VS 2022",
+      "description": "Developer build using Ninja Multi-Config generator"
+    },
+    {
+      "name": "dev_ninja",
+      "inherits": [ "dev_base", "ninja_multi", "LinuxOnly" ],
+      "displayName": "Developer - Ninja Multi-Config",
+      "description": "Developer build using Ninja Multi-Config generator"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "WinOnly",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "LinuxOnly",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "msbuild",
+      "hidden": true,
+      "nativeToolOptions": [ "-m" ]
+    },
+    {
+      "name": "dev_vc143_release",
+      "inherits": [ "msbuild", "WinOnly" ],
+      "displayName": "Release",
+      "description": "Build in Release",
+      "configuration": "Release",
+      "configurePreset": "dev_vc143"
+    },
+    {
+      "name": "dev_vc143_debug",
+      "inherits": [ "msbuild", "WinOnly" ],
+      "displayName": "Debug",
+      "description": "Build in Debug",
+      "configuration": "Debug",
+      "configurePreset": "dev_vc143"
+    },
+    {
+      "name": "dev_vc143_ninja_release",
+      "inherits": [ "WinOnly" ],
+      "displayName": "Release",
+      "description": "Build in Release",
+      "configuration": "Release",
+      "configurePreset": "dev_vc143_ninja"
+    },
+    {
+      "name": "dev_vc143_ninja_debug",
+      "inherits": [ "WinOnly" ],
+      "displayName": "Debug",
+      "description": "Build in Debug",
+      "configuration": "Debug",
+      "configurePreset": "dev_vc143_ninja"
+    },
+    {
+      "name": "dev_ninja_release",
+      "inherits": [ "LinuxOnly" ],
+      "displayName": "Release",
+      "description": "Build in Release",
+      "configuration": "Release",
+      "configurePreset": "dev_ninja"
+    },
+    {
+      "name": "dev_ninja_debug",
+      "inherits": [ "LinuxOnly" ],
+      "displayName": "Debug",
+      "description": "Build in Debug",
+      "configuration": "Debug",
+      "configurePreset": "dev_ninja"
+    }
+  ]
+}

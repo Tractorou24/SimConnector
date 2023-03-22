@@ -22,6 +22,8 @@ THE SOFTWARE.
 
 #include <core/events/Slot.h>
 
+#include <map>
+
 namespace core
 {
     template <typename ...Args>

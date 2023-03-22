@@ -2,8 +2,9 @@
 
 #include <core/interfaces/IResponse.h>
 #include <core/mpl/factory.h>
+#include <core/Export.h>
 
-class ResponseFactory
+class CORE_EXPORT ResponseFactory
 {
     template <typename ResponseType, typename... Args>
     using ResponseCreator = mpl::DerivedCreator<ResponseType, core::interfaces::IResponse, Args...>;

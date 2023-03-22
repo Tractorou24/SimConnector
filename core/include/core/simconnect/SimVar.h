@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "cpch.h"
-
 #include <core/ser/serialize.h>
 #include <SimConnect/SimConnect.h>
 

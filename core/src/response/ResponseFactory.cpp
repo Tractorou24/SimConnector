@@ -1,6 +1,4 @@
-﻿#include "cpch.h"
-
-#include <core/response/ResponseFactory.h>
+﻿#include <core/response/ResponseFactory.h>
 
 #include "core/response/ReadResponse.h"
 #include "core/response/WriteResponse.h"

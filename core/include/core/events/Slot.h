@@ -20,7 +20,7 @@ THE SOFTWARE.
 
 #pragma once
 
-#include "cpch.h"
+#include <functional>
 
 namespace core
 {

@@ -1,13 +1,14 @@
 ﻿#pragma once
 
 #include <core/interfaces/IResponse.h>
+#include <core/Export.h>
 
 namespace core::response
 {
     /**
     * @brief A class received from the simulator after a WriteRequest.
     */
-    class WriteResponse final : public interfaces::IResponse
+    class CORE_EXPORT WriteResponse final : public interfaces::IResponse
     {
         // Serialization
         START_SERIALIZATION(WriteResponse)

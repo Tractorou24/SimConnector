@@ -405,3 +405,4 @@ vendor/premake/bin/
 *.vcxproj
 *.vcxproj.filters
 *.DotSettings
+out/

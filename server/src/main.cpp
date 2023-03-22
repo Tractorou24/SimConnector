@@ -1,5 +1,3 @@
-#include "spch.h"
-
 #include <SimConnectLoader.h>
 #include <core/request/ReadRequest.h>
 #include <core/simconnect/SimVar.h>
@@ -10,13 +8,13 @@
 
 #include "server/NetworkConnection.h"
 
-int main(int argc, char* argv[])
+int main(int, char**)
 {
     SimConnectLoader::LoadSimConnect();
     auto* runner = simconnect::Runner::GetInstance();
 
     server::NetworkConnection connection("127.0.0.1", 1234);
-    connection.connect();
+    assert(connection.connect());
 
     auto simvar = std::make_shared<simconnect::SimVar>("GPS GROUND SPEED", "Meters per second", false);
     auto simvar2 = std::make_shared<simconnect::SimVar>("HSI STATION IDENT", "String", true);
@@ -32,7 +30,7 @@ int main(int argc, char* argv[])
     rq->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
         [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
         {
-            connection.send(x.get());
+            assert(connection.send(x.get()));
         }));
 
     rq2->addSimVar(simvar3);
@@ -40,7 +38,7 @@ int main(int argc, char* argv[])
     rq2->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
         [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
         {
-            connection.send(x.get());
+            assert(connection.send(x.get()));
         }));
 
     runner->openConnection();
