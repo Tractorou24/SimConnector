@@ -18,7 +18,7 @@ namespace server
         NetworkConnection& operator=(const NetworkConnection& other) = delete;
         NetworkConnection& operator=(NetworkConnection&& other) noexcept = delete;
 
-        [[nodiscard]] bool send(const core::interfaces::IRequest* request) noexcept override;
+        [[nodiscard]] bool send(const core::interfaces::IResponse* request) noexcept override;
         [[nodiscard]] bool connect() noexcept override;
 
     private:
@@ -26,7 +26,6 @@ namespace server
         const uint16_t m_port;
 
         std::thread m_thread;
-        bool m_isConnected;
         boost::asio::io_service m_ioService;
         boost::asio::ip::tcp::socket m_socket;
     };

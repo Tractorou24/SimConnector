@@ -20,8 +20,13 @@ namespace core::response
         END_SERIALIZATION
 
         START_DESERIALIZATION(ReadResponse)
-            for (const auto& simvar : object["simvars"])
-                m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
+            auto array = object["simvars"];
+            for (const auto& simvar : array)
+            {
+                auto simvar_ptr = std::make_shared<simconnect::SimVar>();
+                simvar_ptr->deserialize(simvar.dump());
+                m_simvars.push_back(simvar_ptr);
+            }
         END_DESERIALIZATION
 
     public:

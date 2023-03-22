@@ -32,7 +32,7 @@ namespace simconnect
     /**
      * @brief Any SimConnect Simvar used to make requests and receive responses.
      */
-    class SimVar
+    class SimVar : public ISerializable<SimVar>
     {
         friend class Runner;
         friend void CALLBACK details::simconnect_callback(raw::SIMCONNECT_RECV*, raw::DWORD, void*);

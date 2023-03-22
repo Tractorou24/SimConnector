@@ -19,7 +19,7 @@ namespace core::interfaces
         IConnection& operator=(IConnection&& other) noexcept = delete;
 
         [[nodiscard]] virtual bool connect() noexcept = 0;
-        [[nodiscard]] virtual bool send(const IRequest* request) noexcept = 0;
+        [[nodiscard]] virtual bool send(const IResponse* request) noexcept = 0;
 
         core::Signal<const std::shared_ptr<IResponse>> responseSignal;
     };

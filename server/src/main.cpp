@@ -6,13 +6,17 @@
 
 #include <server/Runner.h>
 
-#include <iostream>
 #include <thread>
+
+#include "server/NetworkConnection.h"
 
 int main(int argc, char* argv[])
 {
     SimConnectLoader::LoadSimConnect();
     auto* runner = simconnect::Runner::GetInstance();
+
+    server::NetworkConnection connection("127.0.0.1", 1234);
+    connection.connect();
 
     auto simvar = std::make_shared<simconnect::SimVar>("GPS GROUND SPEED", "Meters per second", false);
     auto simvar2 = std::make_shared<simconnect::SimVar>("HSI STATION IDENT", "String", true);
@@ -26,27 +30,17 @@ int main(int argc, char* argv[])
     rq->addSimVar(simvar2);
 
     rq->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
-        [](const std::shared_ptr<core::interfaces::IResponse>& x)
+        [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
         {
-            x->checkValid();
-            while (x->size() != 0)
-            {
-                const auto var = x->pop();
-                std::cout << var->name() << " = " << var->value() << var->stringValue() << std::endl;
-            }
+            connection.send(x.get());
         }));
 
     rq2->addSimVar(simvar3);
     rq2->addSimVar(simvar4);
     rq2->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
-        [](const std::shared_ptr<core::interfaces::IResponse>& x)
+        [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
         {
-            x->checkValid();
-            while (x->size() != 0)
-            {
-                const auto var = x->pop();
-                std::cout << var->name() << " = " << var->value() << var->stringValue() << std::endl;
-            }
+            connection.send(x.get());
         }));
 
     runner->openConnection();

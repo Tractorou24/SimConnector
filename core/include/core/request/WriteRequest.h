@@ -20,7 +20,11 @@ namespace core::request
 
         START_DESERIALIZATION(WriteRequest)
             for (const auto& simvar : object["simvars"])
-                m_simvars.push_back(DESERIALIZE_PTR(simconnect::SimVar, simvar));
+            {
+                auto simvar_ptr = std::make_shared<simconnect::SimVar>();
+                simvar_ptr->deserialize(simvar);
+                m_simvars.push_back(simvar_ptr);
+            }
         END_DESERIALIZATION
 
     public:
