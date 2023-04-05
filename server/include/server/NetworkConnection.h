@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <core/interfaces/IConnection.h>
+#include <core/Export.h>
 
 #include <boost/asio.hpp>
 
@@ -25,7 +26,6 @@ namespace server
         const std::string m_ip;
         const uint16_t m_port;
 
-        std::thread m_thread;
         boost::asio::io_service m_ioService;
         boost::asio::ip::tcp::socket m_socket;
     };
