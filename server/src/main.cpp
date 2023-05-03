@@ -7,12 +7,26 @@
 
 #include <iostream>
 
-int main(int, char**)
+int main(int argc, char** argv)
 {
+	std::string ip = "127.0.0.1";
+	uint16_t port = 1234;
+
+	if (argc != 3)
+	{
+		std::cout << "Usage: " << argv[0] << " <ip> <port>" << std::endl;
+		std::cout << "Using default values: " << ip << ":" << port << std::endl;
+	}
+	else
+	{
+		ip = argv[1];
+		port = static_cast<uint16_t>(std::stoi(argv[2]));
+	}
+
 	SimConnectLoader::LoadSimConnect();
 	auto* runner = simconnect::Runner::GetInstance();
 
-	server::NetworkConnection connection("127.0.0.1", 1234);
+	server::NetworkConnection connection(ip, port);
 	[[maybe_unused]] const auto status = connection.connect();
 	assert(status);
 
