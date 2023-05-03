@@ -5,10 +5,12 @@ set (HEADER_DIR include)
 set (SOURCE_DIR src)
 
 set (HEADERS
+    ${HEADER_DIR}/${CLIENT_NAME}/Connection.h
 )
 
 set (SOURCES
     ${SOURCE_DIR}/main.cpp
+    ${SOURCE_DIR}/Connection.cpp
 )
 
 spark_add_executable(${TARGET_NAME}

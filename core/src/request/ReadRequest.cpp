@@ -13,7 +13,7 @@ namespace core::request
         m_simvars.insert(m_simvars.end(), simvars.begin(), simvars.end());
     }
 
-    std::vector<std::shared_ptr<simconnect::SimVar>>& ReadRequest::simVars() noexcept
+    std::vector<std::shared_ptr<simconnect::SimVar>> ReadRequest::simVars() const noexcept
     {
         return m_simvars;
     }

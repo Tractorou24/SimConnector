@@ -5,60 +5,62 @@
 
 namespace core::request
 {
-    /**
-     * @brief A class to make a read request for the simulator.
-     */
-    class CORE_EXPORT ReadRequest final : public core::interfaces::IRequest
-    {
-        // Serialization
-        START_SERIALIZATION(ReadRequest)
-            json::json simvars = json::json::array();
-            for (const auto& simvar : m_simvars)
-                simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
-            obj["simvars"] = simvars;
-            obj["type"] = "ReadRequest";
-        END_SERIALIZATION
+	/**
+	 * @brief A class to make a read request for the simulator.
+	 */
+	class CORE_EXPORT ReadRequest final : public core::interfaces::IRequest
+	{
+		// Serialization
+		START_SERIALIZATION(ReadRequest)
+			json::json simvars = json::json::array();
+			for (const auto& simvar : m_simvars)
+				simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
+			obj["m_uuid"] = m_uuid.bytes();
+			obj["simvars"] = simvars;
+			obj["type"] = "ReadRequest";
+			END_SERIALIZATION
 
-        START_DESERIALIZATION(ReadRequest)
-            for (const auto& simvar : object["simvars"])
-            {
-                auto simvar_ptr = std::make_shared<simconnect::SimVar>();
-                simvar_ptr->deserialize(simvar);
-                m_simvars.push_back(simvar_ptr);
-            }
-        END_DESERIALIZATION
+		START_DESERIALIZATION(ReadRequest)
+			for (const auto& simvar : object["simvars"])
+			{
+				auto simvar_ptr = std::make_shared<simconnect::SimVar>();
+				simvar_ptr->deserialize(simvar.dump());
+				m_simvars.push_back(simvar_ptr);
+			}
+			m_uuid = Uuid(object["m_uuid"].get<std::string>());
+		END_DESERIALIZATION
 
-    public:
-        /**
-        * @brief Adds a single simvar to the request.
-         * @param simvar The shared pointer to the simvar.
-         */
-        void addSimVar(std::shared_ptr<simconnect::SimVar>& simvar) noexcept override;
+	public:
+		/**
+		 * @brief Adds a single simvar to the request.
+		 * @param simvar The shared pointer to the simvar.
+		 */
+		void addSimVar(std::shared_ptr<simconnect::SimVar>& simvar) noexcept override;
 
-        /**
-        * @brief Adds a vector of simvars to the request.
-         * @param simvars The vector of simvars shared pointers.
-         */
-        void addSimVars(std::vector<std::shared_ptr<simconnect::SimVar>>& simvars) noexcept override;
+		/**
+		* @brief Adds a vector of simvars to the request.
+		 * @param simvars The vector of simvars shared pointers.
+		 */
+		void addSimVars(std::vector<std::shared_ptr<simconnect::SimVar>>& simvars) noexcept override;
 
-        /**
-        * @brief Removes a single simvar from the request.
-        * @param simvar The shared pointer to the simvar to remove.
-         */
-        void removeSimVar(const std::shared_ptr<simconnect::SimVar>& simvar) noexcept override;
+		/**
+		* @brief Removes a single simvar from the request.
+		* @param simvar The shared pointer to the simvar to remove.
+		 */
+		void removeSimVar(const std::shared_ptr<simconnect::SimVar>& simvar) noexcept override;
 
-        /**
-         * @brief Returns the type of request (Read or Write).
-         */
-        [[nodiscard]] Type requestType() const noexcept override { return request_type; }
+		/**
+		 * @brief Returns the type of request (Read or Write).
+		 */
+		[[nodiscard]] Type requestType() const noexcept override { return request_type; }
 
-        /**
-         * @brief Gets the current added simvars to the request.
-      * @return The vector of simvars shared pointers.
-         */
-        [[nodiscard]] std::vector<std::shared_ptr<simconnect::SimVar>>& simVars() noexcept override;
+		/**
+		 * @brief Gets the current added simvars to the request.
+	  * @return The vector of simvars shared pointers.
+		 */
+		[[nodiscard]] std::vector<std::shared_ptr<simconnect::SimVar>> simVars() const noexcept override;
 
-    private:
-        static constexpr Type request_type = Type::Read;
-    };
+	private:
+		static constexpr Type request_type = Type::Read;
+	};
 }

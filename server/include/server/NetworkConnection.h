@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <core/interfaces/IConnection.h>
-#include <core/Export.h>
 
 #include <boost/asio.hpp>
 
@@ -20,6 +19,8 @@ namespace server
         NetworkConnection& operator=(NetworkConnection&& other) noexcept = delete;
 
         [[nodiscard]] bool send(const core::interfaces::IResponse* request) noexcept override;
+        [[nodiscard]] size_t available_bytes() const;
+        [[nodiscard]] std::string read() noexcept;
         [[nodiscard]] bool connect() noexcept override;
 
     private:

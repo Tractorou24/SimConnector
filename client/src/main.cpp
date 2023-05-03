@@ -1,33 +1,57 @@
 #include <boost/asio.hpp>
 
 #include <core/response/ResponseFactory.h>
+#include <core/request/ReadRequest.h>
+#include <core/request/RemoveRequest.h>
+
+#include <client/Connection.h>
 
 #include <iostream>
-
-std::string read_(boost::asio::ip::tcp::socket& socket)
-{
-    boost::asio::streambuf buf;
-    boost::asio::read_until(socket, buf, "\n");
-    std::string data = boost::asio::buffer_cast<const char*>(buf.data());
-    return data;
-}
 
 int main(int, char**)
 {
     ResponseFactory factory;
-    boost::asio::io_context io_context;
-    boost::asio::ip::tcp::socket socket(io_context);
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    boost::system::error_code error;
-    socket.connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 1234));
-    if (error)
+    Connection c("127.0.0.1", 1234);
+    if (!c.connect())
         return 1;
 
+    auto simvar1 = std::make_shared<simconnect::SimVar>("GPS GROUND SPEED", "Meters per second", false);
+    auto simvar2 = std::make_shared<simconnect::SimVar>("HSI STATION IDENT", "String", true);
+
+    auto simvar3 = std::make_shared<simconnect::SimVar>("HSI DISTANCE", "Nautical miles", false);
+    auto simvar4 = std::make_shared<simconnect::SimVar>("FUEL RIGHT QUANTITY", "Gallons", false);
+
+    std::shared_ptr<core::interfaces::IRequest> rq = std::make_shared<core::request::ReadRequest>();
+    std::shared_ptr<core::interfaces::IRequest> rq2 = std::make_shared<core::request::ReadRequest>();
+    rq->addSimVar(simvar1);
+    rq->addSimVar(simvar2);
+
+    //rq->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
+    //    [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
+    //    {
+    //        [[maybe_unused]] const auto status = connection.send(x.get());
+    //        assert(status);
+    //    }));
+
+    rq2->addSimVar(simvar3);
+    rq2->addSimVar(simvar4);
+    //rq2->responseSignal.connect(core::Slot<const std::shared_ptr<core::interfaces::IResponse>&>(
+    //    [&connection](const std::shared_ptr<core::interfaces::IResponse>& x)
+    //    {
+    //        [[maybe_unused]] const auto status = connection.send(x.get());
+    //        assert(status);
+    //    }));
+
+    assert(c.send(rq->serialize()));
+    assert(c.send(rq2->serialize()));
+
+    auto time = std::chrono::system_clock::now();
     while (true)
     {
-        auto data = read_(socket);
+        auto data = c.read();
+        if (data.empty())
+			continue;
         auto json_data = json::json::parse(data);
 
         auto response = factory.create(json_data.at("type"));
@@ -40,6 +64,12 @@ int main(int, char**)
                 std::cout << simvar->stringValue() << std::endl;
             else
                 std::cout << simvar->value() << std::endl;
+        }
+
+        if (std::chrono::system_clock::now() - time > std::chrono::seconds(5))
+        {
+            core::request::RemoveRequest rq3(rq.get());
+            assert(c.send(rq3.serialize()));
         }
     }
 }
