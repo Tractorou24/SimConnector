@@ -15,7 +15,6 @@ namespace core::request
 			json::json simvars = json::json::array();
 			for (const auto& simvar : m_simvars)
 				simvars.push_back(SERIALIZE_PTR(simconnect::SimVar, simvar));
-			obj["m_uuid"] = m_uuid.bytes();
 			obj["simvars"] = simvars;
 			obj["type"] = "ReadRequest";
 			END_SERIALIZATION
@@ -27,7 +26,6 @@ namespace core::request
 				simvar_ptr->deserialize(simvar.dump());
 				m_simvars.push_back(simvar_ptr);
 			}
-			m_uuid = Uuid(object["m_uuid"].get<std::string>());
 		END_DESERIALIZATION
 
 	public:
@@ -38,7 +36,7 @@ namespace core::request
 		void addSimVar(std::shared_ptr<simconnect::SimVar>& simvar) noexcept override;
 
 		/**
-		* @brief Adds a vector of simvars to the request.
+		 * @brief Adds a vector of simvars to the request.
 		 * @param simvars The vector of simvars shared pointers.
 		 */
 		void addSimVars(std::vector<std::shared_ptr<simconnect::SimVar>>& simvars) noexcept override;

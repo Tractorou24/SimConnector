@@ -46,7 +46,6 @@ int main(int, char**)
     assert(c.send(rq->serialize()));
     assert(c.send(rq2->serialize()));
 
-    auto time = std::chrono::system_clock::now();
     while (true)
     {
         auto data = c.read();
@@ -64,12 +63,6 @@ int main(int, char**)
                 std::cout << simvar->stringValue() << std::endl;
             else
                 std::cout << simvar->value() << std::endl;
-        }
-
-        if (std::chrono::system_clock::now() - time > std::chrono::seconds(5))
-        {
-            core::request::RemoveRequest rq3(rq.get());
-            assert(c.send(rq3.serialize()));
         }
     }
 }
